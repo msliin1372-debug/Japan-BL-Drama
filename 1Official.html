@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Japan BL Drama</title>
+</head>
+
+<div class="sidebar-wrap">
+    <div class="sidebar-container">
+        <!-- 开关按钮 -->
+        <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+        <!-- 侧边栏主体 -->
+        <aside class="custom-sidebar hidden" id="customSidebar">
+            <h3 class="sidebar-title" style="font-family: 'Times New Roman', Times, serif;">分类</h3>
+            <ul class="category-list" style="font-family: 'Times New Roman', Times, serif;">
+                <li><a href="http://127.0.0.1:5501/2青春.html" target="_blank">青春</a></li>
+                <li><a href="http://127.0.0.1:5501/2校园.html" target="_blank">校园</a></li>
+               <li class="parent-item">
+    <div class="parent-box">
+        <!-- 社会文字：超链接，点击跳转到你的社会页面 -->
+        <a href="http://127.0.0.1:5501/2社会.html" class="social-link" target="_blank">社会</a>
+        <!-- 箭头：仅点击展开，无链接 -->
+        <span class="arrow" style="cursor: pointer;">▸</span>
+    </div>
+    <!-- 子菜单：职场（样式不变，可改自己的链接） -->
+    <ul class="sub-menu">
+        <li><a href="http://127.0.0.1:5501/2职场.html" target="_blank">职场</a></li>
+    </ul>
+</li>
+                <li><a href="http://127.0.0.1:5501/2喜剧向.html">喜剧向</a></li>
+                <li><a href="#">虐向</a></li>
+            </ul>
+        </aside>
+    </div>
+</div>
+
+<div class="img-title">
+    <body style="background-color: rgb(253, 251, 253);">
+        <h1 style="color: rgb(238, 173, 199);"><b>日本纯爱百科网</b></h1>  
+        <h2 style="color: rgb(238, 173, 199);">Japan BL Drama Collection</h2>
+        <h5><i>Made by Fishfood</i></h5>
+</div>
+
+<div style="text-align: center; margin: 20px 0;">
+  <button onclick="window.location.href='http://127.0.0.1:5501/2.1全部.html#'" style="
+    background-color:rgb(238, 173, 199);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-family: 'Times New Roman', Times, serif;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(214, 75, 121, 0.2);
+    transition: background-color 0.2s ease;
+  " onmouseover="this.style.backgroundColor='#d64b79'" onmouseout="this.style.backgroundColor='#eea3c7'">
+    点击查看日本纯爱剧集汇总
+  </button>
+</div>
+
+<style>
+/* 父分类容器 - 适配文字+箭头拆分 */
+.parent-item {
+  list-style: none;
+  margin:10px 0;
+}
+.parent-box {
+  display: flex;
+  align-items: center;
+  padding: 0;
+  border-radius: 6px;
+  width: 100%;
+}
+/* 社会文字链接样式 - 和原有分类保持一致 */
+.social-link {
+  font-size: 16px;
+  color: #333;
+  text-decoration: none;
+  text-align: left;
+  width: calc(100% - 20px);
+  padding: 8px 10px;
+  display: block;
+  border-radius: 6px;
+}
+/* 鼠标悬浮父容器：文字+箭头一起变粉色，和原有风格统一 */
+.parent-box:hover {
+  background-color: transparent;
+}
+.parent-box:hover .social-link {
+    background-color: #fef0f5; /* 继承普通a的hover背景 */
+  color: #d64b79;
+  padding-left: 15px; 
+}
+.parent-box:hover .arrow {
+  color: #d64b79;
+}
+/* 箭头样式 - 仅展开功能，无链接 */
+.arrow {
+  font-size: 12px;
+  color: #333;
+  transition: transform 0.2s;
+  user-select: none; /* 防止箭头被选中 */
+  cursor: pointer;
+  flex-shrink: 0;
+  margin-right: 5px;
+}
+.arrow.open {
+  transform: rotate(90deg); /* 展开时箭头右转90度 */
+}
+/* 子菜单：职场（字体小+灰色+缩进，和之前一致） */
+.sub-menu {
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+  display: none; /* 默认隐藏 */
+}
+.sub-menu.show {
+  display: block; /* 展开显示 */
+}
+.sub-menu li a {
+  padding: 6px 18px !important;
+  font-size: 14px !important;
+  color: #888 !important; /* 灰色突出层级 */
+  font-weight: normal;
+  text-decoration: none;
+  display: block;
+  border-radius: 6px;
+}
+/* 职场子项悬浮效果，和原有统一 */
+.sub-menu li a:hover {
+  color: #d64b79 !important;
+  background: #fef0f5;
+  padding-left: 22px !important;
+}
+
+    .img-title {
+          margin: 4vw 0 2vw;
+          padding: 0 2vw;
+            text-align: center;
+    }
+    .contact {text-align: center;}
+</style>
+
+<br><br>
+<style>
+    html {
+    font-size: 16px;
+    @media (max-width: 768px) {
+        font-size: 14px;
+    }
+}
+        .img-text-module {
+            width: 100%;
+            margin: 2vw auto;
+            padding: 1vw;
+            background-color: #fff7d4;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+            padding: 10px 30px;
+            display: flex;
+            align-items: center;
+            gap: 3vw;
+            box-sizing: border-box;
+            writing-mode: horizontal-tb;
+            text-orientation: mixed;
+            word-wrap: break-word; 
+        }
+        .img-border-dashed {
+            width: 100%;
+            max-width: 240px;
+            border: 1px dashed #f8bbd0;
+            padding: 8px;
+            border-radius: 6px;
+            background-color: #b4e8f3; 
+            margin:0 auto ;
+            box-sizing: border-box;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15)
+        }
+        .img-border-dashed img {
+            width: 100%;
+            display: block;
+            border-radius: 4px;
+        }
+    </style>  
+
+<div style="position: relative; width: 90%; max-width: 600px; margin: 0 auto;">
+  <!-- 核心修改：fixed → absolute，加top和margin:0，固定在板块上方 -->
+  <p style=" left: -20px; top: -40px; position: absolute; margin: 0;">每日首推：</p>
+  
+  <div class="img-text-module">
+    <p style="font-family:'Times New Roman', Times, serif ; margin-top: 0; color: #414040;" ><b>美丽的他</b>
+      <br><br>平良一成 x 清居奏
+      <br>改编自凪良悠的同名小说，讲述因从小口吃不能随心所欲说话而不习惯周围环境的高中生平良一成，与魅力十足站在学校金字塔顶点的同学清居奏的爱情故事.
+    </p>
+    <img style="margin-top: 10px; margin-bottom: 10px   ;" src="美丽的他.jpg" alt="美丽的他" class="img-border-dashed">
+  </div>
+</div>
+
+<p></p>
+<br><br>
+
+<style>
+
+.sidebar-wrap {
+    display: flex;
+    justify-content: flex-end; /* 让侧边栏靠右显示 */
+    width: 100%;
+    position: relative;
+    height: 0;
+}
+
+/* 侧边栏容器 */
+.sidebar-container {
+    display: flex;
+    align-items: flex-start;
+    position: absolute;
+    top: 0;
+    right:0;
+}
+
+/* 侧边栏开关按钮 */
+.sidebar-toggle {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: rgb(238, 173, 199);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(214, 75, 121, 0.2);
+    margin-right: 10px; /* 按钮和侧边栏间距 */
+    flex-shrink: 0;
+}
+
+/* 侧边栏主体 */
+.custom-sidebar {
+    width: 240px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(214, 75, 121, 0.08);
+    padding: 20px;
+    box-sizing: border-box;
+    height: fit-content;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    flex-shrink: 0;
+}
+
+/* 隐藏状态 */
+.custom-sidebar.hidden {
+    width: 0;
+    padding: 0;
+    box-shadow: none;
+}
+
+/* 侧边栏标题 */
+.sidebar-title {
+    font-size: 18px;
+    color: rgb(238, 173, 199);
+    margin: 0 0 15px 0;
+    padding-bottom: 8px;
+    border-bottom: 2px solid #e88ea8;
+    font-weight: bold;
+}
+
+/* 分类列表 */
+.category-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.category-list li {
+    margin: 10px 0;
+}
+
+.category-list a {
+    text-decoration: none;
+    color: #333333;
+    font-size: 16px;
+    padding: 8px 10px;
+    display: block;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.category-list a:hover {
+    background-color: #fef0f5;
+    color: #d64b79;
+    padding-left: 15px;
+}
+
+/* 响应式适配 */
+@media (max-width: 768px) {
+    .sidebar-wrap {
+        justify-content: center; /* 移动端居中 */
+    }
+    .custom-sidebar {
+        width: 100%;
+        max-width: 240px;
+    }
+}
+</style>
+</style>
+
+<div class="contact">
+<h5 style="font-size: 15px;"><i><u>Contact: 18611931385</u></i></h5>
+</div>
+
+<script>
+// 修复1：修正社会分类展开的选择器（选.arrow，因为箭头是点击展开的核心）
+document.querySelector('.arrow').addEventListener('click', function (e) {
+  e.stopPropagation(); // 防止点击箭头触发a标签跳转
+  const subMenu = this.closest('.parent-item').querySelector('.sub-menu');
+  this.classList.toggle('open');
+  subMenu.classList.toggle('show');
+});
+
+// 侧边栏开关（原有代码保留，没问题）
+const toggleBtn = document.getElementById('sidebarToggle');
+const sidebar = document.getElementById('customSidebar');
+
+toggleBtn.addEventListener('click', function() {
+    sidebar.classList.toggle('hidden');
+    // 切换按钮图标
+    toggleBtn.innerText = sidebar.classList.contains('hidden') ? '☰' : '✕';
+});
+
+// 额外修复：点击社会链接时，只跳转不展开（避免误操作）
+document.querySelector('.social-link').addEventListener('click', function (e) {
+  e.stopPropagation();
+});
+</script>
+</body>
+</html>
+
