@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>社会 - 剧集列表</title>
+
+        <style>
+
+.work-btn {
+    display: block;
+    width: 120px;
+    height: 40px;
+    line-height: 40px;
+    text-align: center;
+    background-color: rgb(147, 211, 148);
+    color: white;
+    border-radius: 6px;
+    text-decoration: none;
+    margin: 0 auto 20px;
+    margin-top: 20px;
+    transition: all 0.2s ease;
+    font-family: 'Times New Roman', Times, serif;
+}
+
+.work-btn:hover {
+    background-color: #197729;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 8px rgba(214, 75, 121, 0.3);
+}
+
+* { 
+    line-height: 1.9;
+}
+.sidebar-wrap {
+    display: flex;
+    justify-content: flex-end; /* 让侧边栏靠右显示 */
+    width: 100%;
+    position: relative;
+    height: 0;
+    z-index: 9999;
+}
+
+/* 侧边栏容器 */
+.sidebar-container {
+    display: flex;
+    align-items: flex-start;
+    position: absolute;
+    top: 0;
+    right:0;
+    z-index: 9999;
+}
+
+/* 侧边栏开关按钮 */
+.sidebar-toggle {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color:rgb(147, 211, 148);
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 8px rgba(214, 75, 121, 0.2);
+    margin-right: 10px; /* 按钮和侧边栏间距 */
+    flex-shrink: 0;
+}
+
+/* 侧边栏主体 */
+.custom-sidebar {
+    width: 240px;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(214, 75, 121, 0.08);
+    padding: 20px;
+    box-sizing: border-box;
+    height: fit-content;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 9999;
+}
+
+/* 隐藏状态 */
+.custom-sidebar.hidden {
+    width: 0;
+    padding: 0;
+    box-shadow: none;
+}
+
+/* 侧边栏标题 */
+.sidebar-title {
+    font-size: 18px;
+    color: rgb(54, 88, 56);
+    margin: 0 0 15px 0;
+    padding-bottom: 8px;
+    border-bottom: 2px solid rgb(55, 150, 57);
+    font-weight: bold;
+}
+
+/* 分类列表 */
+.category-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.category-list li {
+    margin: 10px 0;
+}
+
+.category-list a {
+    text-decoration: none;
+    color: #333333;
+    font-size: 16px;
+    padding: 8px 10px;
+    display: block;
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.category-list a:hover {
+    background-color: #e8faeb;
+    color: rgb(54, 88, 56);
+    padding-left: 15px;
+}
+
+/* 响应式适配 */
+@media (max-width: 768px) {
+    .sidebar-wrap {
+        justify-content: center; /* 移动端居中 */
+    }
+    .custom-sidebar {
+        width: 100%;
+        max-width: 240px;
+    }
+}
+</style>
+
+    <div class="sidebar-wrap">
+    <div class="sidebar-container">
+        <!-- 开关按钮 -->
+        <button class="sidebar-toggle" id="sidebarToggle">☰</button>
+        <!-- 侧边栏主体 -->
+        <aside class="custom-sidebar hidden" id="customSidebar">
+            <h3 class="sidebar-title" style="font-family: 'Times New Roman', Times, serif;">分类</h3>
+            <ul class="category-list" style="font-family: 'Times New Roman', Times, serif;">
+                <li><a href="http://127.0.0.1:5501/1Official.html" target="_self">主页</a></li>
+                <li><a href="http://127.0.0.1:5501/2青春.html" target="_blank">青春</a></li>
+                <li><a href="http://127.0.0.1:5501/2校园.html" target="_blank">校园</a></li>
+                <li><a href="http://127.0.0.1:5501/2喜剧向.html">喜剧向</a></li>
+                <li><a href="http://127.0.0.1:5501/2虐向.html">虐向</a></li>
+            </ul>
+        </aside>
+    </div>
+</div>
+
+    <style>
+        /* 全局样式重置 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        /* 页面背景 */
+        body {
+            background-color: rgb(253, 251, 253);
+            padding: 20px;
+        }
+
+        /* 标题区域 */
+        .page-title {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .page-title h1 {
+            font-size: 2.5rem;
+            color: #333;
+            position: relative;
+            display: inline-block;
+        }
+
+        .page-title h1::after {
+            content: "";
+            width: 80px;
+            height: 3px;
+            background-color: rgb(147, 211, 148);
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        /* 剧集列表容器 */
+        .drama-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 40px;
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px 0;
+        }
+
+        /* 剧集卡片样式 */
+        .drama-card {
+            background-color:white ;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s ease;
+        }
+
+        .drama-card:hover {
+            transform: translateY(-5px);
+        }
+
+        /* 剧集图片容器 */
+        .drama-img {
+            width: 100%;
+            height: 380px;
+            background-color: #e9ecef;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #999;
+            font-size: 14px;
+        }
+
+        .drama-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* 剧集信息区域 */
+        .drama-info {
+            padding: 20px;
+        }
+
+        .drama-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .drama-meta {
+            font-size: 0.9rem;
+            color: #666;
+            margin-bottom: 8px;
+            line-height: 1.5;
+        }
+
+        .drama-meta span {
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        .drama-desc {
+            font-size: 0.88rem;
+            color: #787878;
+            line-height: 1.6;
+            margin-top: 15px;
+            display: -webkit-box;
+            -webkit-line-clamp: 4;
+            line-clamp: 4;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        /* 响应式适配 */
+        @media (max-width: 768px) {
+            .page-title h1 {
+                font-size: 2rem;
+            }
+
+            .drama-list {
+                grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            }
+
+            .drama-img {
+                height: 320px;
+            }
+        }
+
+                /* 全屏详情弹窗遮罩 */
+.drama-detail-mask {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.6);
+    z-index: 999;
+    display: none; /* 默认隐藏 */
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+/* 详情弹窗主体 */
+.drama-detail-content {
+    background-color: #fafafa;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 1000px;
+    min-height: 80vh;
+    padding: 40px;
+    position: relative;
+}
+
+/* 关闭按钮 */
+.detail-close-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #86d2e5;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+    font-size: 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* 详情页布局 */
+.detail-wrap {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 40px;
+    margin-bottom: 30px;
+}
+
+.detail-img img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.detail-info h2 {
+    font-size: 1.8rem;
+    color: #333;
+    margin-bottom: 20px;
+    border-bottom: 3px solid rgb(129, 202, 208);
+    padding-bottom: 10px;
+}
+
+.detail-meta {
+    font-size: 1rem;
+    color: #444;
+    margin: 15px 0;
+    line-height: 2;
+}
+
+.detail-meta span {
+    display: block;
+    margin-bottom: 8px;
+}
+
+.detail-desc {
+    font-size: 1rem;
+    color: #444;
+    line-height: 1.8;
+    margin-top: 20px;
+}
+
+/* 响应式适配 */
+@media (max-width: 768px) {
+    .detail-wrap {
+        grid-template-columns: 1fr;
+    }
+    .drama-detail-content {
+        padding: 20px;
+    }
+    .detail-info h2 {
+        font-size: 1.5rem;
+    }
+}
+    </style>
+</head>
+
+<body>
+    <!-- 页面标题 -->
+    <div class="page-title">
+        <h1 style="font-size: 30px;">社会</h1>
+        <a href="http://127.0.0.1:5501/2职场.html" class="work-btn">职场类剧集</a>
+    </div>
+
+    <!-- 剧集列表 -->
+    <div class="drama-list">
+        <!-- 剧集1：美妆搭档情人 -->
+        <div class="drama-card">
+            <div class="drama-img">
+                
+            <img src="美搭.jpeg" alt="美妆搭档情人">
+            </div>
+            <div class="drama-info">
+                <h3 class="drama-title">美妆搭档情人（两季）</h3>
+                <div class="drama-meta">
+                    <span>佐桥斗真 X 间宫枣</span>
+                    <span>主演：丰田裕大，奥野壮</span>
+                    <span>共18集/前后辈/年下/同居</span>
+                </div>
+                <p class="drama-desc">工作狂魔情侣绝赞同居恋爱中</p>
+            </div>
+        </div>
+
+        <!-- 剧集2：杀死你的旅程 -->
+        <div class="drama-card">
+            <div class="drama-img">
+                <img src="杀旅.jpeg" alt="杀死你的旅程">
+</div>
+                <div class="drama-info">
+                <h3 class="drama-title">杀死你的旅程</h3>
+                <div class="drama-meta">
+                    <span>片冈锦司 X 小田岛涟</span>
+                    <span>主演：和田雅成，高桥大翔</span>
+                    <span>共6集/黑帮/不洁/公路/结婚</span>
+                </div>
+                <p class="drama-desc">什么叫在杀死你朋友偶像前先和他做了？！</p>
+            </div>
+        </div>
+
+        <!-- 剧集3：三十岁魔法师 -->
+        <div class="drama-card">
+            <div class="drama-img">
+                <img src="30岁.jpeg" alt="到了30岁还是处男，似乎会变成魔法师">
+            </div>
+            <div class="drama-info">
+                <h3 class="drama-title">到了30岁还是处男，似乎会变成魔法师</h3>
+                <div class="drama-meta">
+                    <span>黑泽优一 X 安达清</span>
+                    <span>主演：<s>町田启太</s>，赤楚卫二</span>
+                    <span>共12集/职场/暗恋/读心</span>
+                </div>
+                <p class="drama-desc"></p>
+            </div>
+        </div>
+
+        <!-- 剧集4：毒恋 -->
+        <div class="drama-card">
+            <div class="drama-img">
+                <img src="毒恋.jpeg" alt="毒恋">
+            </div>
+            <div class="drama-info">
+                <h3 class="drama-title">毒恋～毒过后就会变成恋爱</h3>
+                <div class="drama-meta">
+                    <span>哈尔特 X 志波令真</span>
+                    <span>主演：兵头功海，滨正悟</span>
+                    <span>共12集/职场/推理/喜剧向</span>
+                </div>
+                <p class="drama-desc"></p>
+            </div>
+        </div>
+
+       <!-- 剧集5：我们的餐桌 -->
+        <div class="drama-card">
+            <div class="drama-img">
+                <img src="我们的餐桌.jpeg" alt="我们的餐桌">
+            </div>
+            <div class="drama-info">
+                <h3 class="drama-title">我们的餐桌</h3>
+                <div class="drama-meta">
+                    <span>穗积丰 X 上田穰</span><br>
+                    <span>主演：饭岛宽骑，犬饲贵丈</span>
+                    <span>共10集/美食/治愈/纯爱/养小孩</span>
+                </div>
+                <p class="drama-desc">小种给自己挑了个很会做饭的嫂子！</p>
+            </div>
+        </div>
+
+        <!-- 剧集6：爱在记忆被冻结时 -->
+        <div class="drama-card">
+            <div class="drama-img">
+                <img src="爱冻.jpeg" alt="爱在记忆被冻结时">
+            </div>
+            <div class="drama-info">
+                <h3 class="drama-title">爱在记忆被冻结时</h3>
+                <div class="drama-meta">
+                    <span>池上郁哉 X 奥泽律</span>
+                    <span>主演：铃木康介，本田响矢</span>
+                    <span>共6集/失忆/破镜重圆/美受</span>
+                </div>
+                <p class="drama-desc">趁着失忆乘虚而入但其实一直都是他？！</p>
+            </div>
+        </div>
+
+        <!-- 剧集7：糖果色恋爱悖论 -->
+        <div class="drama-card">
+            <div class="drama-img">
+                <img src="糖果色.jpeg" alt="糖果色的恋爱反论">
+            </div>
+            <div class="drama-info">
+                <h3 class="drama-title">糖果色的恋爱反论</h3>
+                <div class="drama-meta">
+                    <span>芜木元治 X 尾上聪</span>
+                    <span>主演：山中柔太朗，木村慧人</span>
+                    <span>共8集/搭档/职场/从恨到爱</span>
+                </div>
+                <p class="drama-desc"></p>
+            </div>
+        </div>
+
+        <!-- 剧集8：幸福终末 -->
+        <div class="drama-card">
+            <div class="drama-img">
+                <img src="幸福终末.png" alt="幸福终末">
+            </div>
+            <div class="drama-info">
+                <h3 class="drama-title">幸福终末</h3>
+                <div class="drama-meta">
+                    <span>黄浩然 X 柏木千纮</span><br>
+                    <span>主演：泽村玲，别府由来</span>
+                    <span>共8集/矮攻/虐向/不洁</span>
+                </div>
+                <p class="drama-desc"></p>
+            </div>
+        </div>
+
+        <!-- 剧集9：完美求婚 -->
+        <div class="drama-card">
+            <div class="drama-img">
+                <img src="完美求婚.jpeg" alt="完美求婚">
+            </div>
+            <div class="drama-info">
+                <h3 class="drama-title">完美求婚</h3>
+                <div class="drama-meta">
+                    <span>深谷甲斐 X 渡浩国</span>
+                    <span>主演：野村康太，金子隼也</span>
+                    <span>共6集/竹马/治愈/清淡</span>
+                </div>
+                <p class="drama-desc"></p>
+            </div>
+        </div>
+
+        <!-- 剧集10：相逢骤雨中 -->
+        <div class="drama-card">
+            <div class="drama-img">
+                <img src="骤雨中.jpeg" alt="相逢骤雨中">
+            </div>
+            <div class="drama-info">
+                <h3 class="drama-title">相逢骤雨中</h3>
+                <div class="drama-meta">
+                    <span>萩原一显 X 半井整</span>
+                    <span>主演：武藤润，伊藤明日阳</span>
+                    <span>共7集/不洁/天降/同频</span>
+                </div>
+                <p class="drama-desc">从一封误传的电子邮件开始的故事</p>
+            </div>
+        </div>
+
+        <!-- 剧集11：25时 -->
+        <div class="drama-card">
+            <div class="drama-img">
+                <img src="25时.png" alt="如果是你或许可以相恋">
+            </div>
+            <div class="drama-info">
+                <h3 class="drama-title">25时，赤坂见（两季）</h3>
+                <div class="drama-meta">
+                    <span>羽山麻水 X 白崎由岐</span>
+                    <span>主演：驹木根葵汰，新原泰佑</span>
+                    <span>共20集/演员/大学/前后辈</span>
+                </div>
+                <p class="drama-desc">为了更好的演技去假扮情侣完全是心思偷偷藏不住啊喂！</p>
+            </div>
+        </div>
+
+        <!-- 剧集12：体感预报 -->
+        <div class="drama-card">
+            <div class="drama-img">
+                <img src="体感预报.jpeg" alt="体感预报">
+            </div>
+            <div class="drama-info">
+                <h3 class="drama-title">体感预报</h3>
+                <div class="drama-meta">
+                    <span>濑崎瑞贵 X 棚田叶</span>
+                    <span>主演：樋口幸平，增子敦贵</span>
+                    <span>共8集/同居/包养/前后辈</span>
+                </div>
+                <p class="drama-desc">不是包养是求婚！但是单方面(⌒▽⌒)</p>
+            </div>
+        </div>
+
+        <!-- 剧集13：恋二度 -->
+        <div class="drama-card">
+            <div class="drama-img">
+                <img src="恋二度.webp" alt="第二次恋爱才完美">
+            </div>
+            <div class="drama-info">
+                <h3 class="drama-title">第二次恋爱才完美</h3>
+                <div class="drama-meta">
+                    <span>岩永崇 X 宫田晃启</span>
+                    <span>主演：古屋吕敏，长谷川慎</span>
+                    <span>共6集/前后辈/破镜重圆/职场</span>
+                </div>
+                <p class="drama-desc">不会因为你帅气的面孔而给你第三次机会的哦</p>
+            </div>
+        </div>
+
+        <!--剧集14: 经典杯子蛋糕-->
+         <div class="drama-card">
+            <div class="drama-img">
+                <img src="" alt="第二次恋爱才完美">
+            </div>
+            <div class="drama-info">
+                <h3 class="drama-title">经典杯子蛋糕</h3>
+                <div class="drama-meta">
+                    <span>外川 X 野末</span><br>
+                    <span>主演：木村达成，武田航平</span>
+                    <span>共5集/前后辈/职场/年下/暗恋</span>
+                </div>
+                <p class="drama-desc">上司是不能成为妻子的吗</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 剧集详情弹窗 -->
+<div class="drama-detail-mask" id="dramaDetailMask">
+    <div class="drama-detail-content">
+        <button class="detail-close-btn" id="detailCloseBtn">✕</button>
+        <div class="detail-wrap">
+            <div class="detail-img" id="detailImg"></div>
+            <div class="detail-info">
+                <h2 id="detailTitle"></h2>
+                <div class="detail-meta" id="detailMeta"></div>
+                <div class="detail-desc" id="detailDesc"></div>
+            </div>
+        </div>
+        <!-- 可扩展更多内容：比如播放链接、演职员表、用户评论等 -->
+    </div>
+</div>
+
+<script>
+    const toggleBtn = document.getElementById('sidebarToggle');
+    const sidebar = document.getElementById('customSidebar');
+    
+    toggleBtn.addEventListener('click', function() {
+        sidebar.classList.toggle('hidden');
+        // 切换按钮图标
+        toggleBtn.innerText = sidebar.classList.contains('hidden') ? '☰' : '✕';
+    });
+
+    const dramaDetails = [
+            // 第1个：美妆搭档情人（示例已填完整）
+            {
+                id: 1,
+                title: "美妆搭档情人（两季）",
+                img: "美搭.jpeg",
+                alt: "美妆搭档情人",
+                meta: `
+                    <span>主角：佐桥斗真 X 间宫枣</span>
+                    <span>主演：丰田裕大，奥野壮</span>
+                    <span>集数：第一季8集，第二季10集</span>
+                    <span>标签：前后辈/年下/同居/职场</span>
+                    <span>播出时间：2024/2026</span>
+                `,
+                desc: "该剧讲述化妆品销售员佐桥斗真与前辈间宫枣被迫组成职场搭档，表面性格迥异的两人因得知间宫枣性取向秘密而被迫加强合作。在应对客户投诉与恶意骚扰事件的过程中，双方逐渐发现彼此隐藏的真实性格，从针锋相对到相互理解，最终发展出暧昧情愫。"
+            },
+            // 第2个：三十岁魔法师（你可参考上面格式补充）
+            {
+                id: 2,
+                title: "杀死你的旅程",
+                img: "",
+                alt: "杀死你的旅程",
+                meta: `
+                    <span>主角：片冈锦司 X 小田岛涟</span>
+                    <span>主演：和田雅成，高桥大翔/span>
+                    <span>集数：共6集</span>
+                    <span>标签：黑帮/不洁/公路/结婚</span>
+                    <span>播出时间：2025年</span>
+                `,
+                desc: "黑帮若头片冈锦司（和田雅成 饰）因权力斗争被组长之子桐井下令暂避风头，奉命随行监视的组员小田岛涟（高桥大翔 饰）表面担任司机，实际背负暗杀任务。二人逃亡途中从敌对到相互吸引，小田岛从最初怀着憎恨与复仇的心态，逐渐被片冈展现的真诚与温情触动，使命与情感的冲突贯穿整个故事，最终导向生死抉择" // 这里填详细介绍
+            },
+            // 第3个：毒恋（待补充）
+            {
+                id: 3,
+               title: "到了30岁还是处男，似乎会变成魔法师",
+                img: "30岁.jpeg",
+                alt: "到了30岁还是处男，似乎会变成魔法师",
+                meta: `
+                    <span>主角：黑泽优一 X 安达清</span>
+                    <span>主演：町田启太，赤楚卫二</span>
+                    <span>集数：共12集</span>
+                    <span>标签：职场/暗恋/读心/治愈</span>
+                    <span>播出时间：2020年</span>
+                `,
+                desc: "安达到了30岁还保有处男之身，因此获得了“只要接触就能读取人心”这种朴素的魔法。虽然安达拥有的力量毫无用处，但却意外地读取到了公司内首屈一指的帅哥、营业部王牌同事黑泽充满了对安达的爱恋之情的心。从清爽的帅哥到内心闹别扭的处男，两人想法直来直去，一心一意。" // 这里填详细介绍
+            },
+            // 第4个：糖果色的恋爱反论（待补充）
+            {
+                id: 4,
+                title: "毒恋～毒过后就会变成恋爱",
+                img: "毒恋.jpeg",
+                alt: "毒恋",
+                meta: `
+                    <span>主角：哈尔特 X 志波令真</span>
+                    <span>主演：兵头功海，滨正悟</span>
+                    <span>集数：共12集</span>
+                    <span>标签：职场/推理/喜剧向</span>
+                    <span>播出时间：2024年</span>
+                `,
+                desc: "天才律师·志波令真作为事务所最年轻的精英，立志要成为律法界的守护神。有一天，志波在酒吧遇到了神秘的天才诈骗犯·哈尔特。哈尔特向正在寻找能干工作伙伴的志波表达了合作意向，而志波看中了哈尔特易伪装成他人的才能，因此将他“养”在自己家里。从此，和绝对秘密的伙伴的同居开始了！擅长撒娇，不管遇到什么样的危险都为主人尽心尽力的哈尔特，恋爱新手志波逐渐被“毒”，终于坠入“恋爱”…！？"
+            },
+            // 第5个：完美求婚（待补充）
+            {
+                id: 5,
+                title: "我们的餐桌",
+                img: "",
+                alt: "我们的餐桌",
+                meta: `
+                    <span>主角：穗积丰 X 上田穰</span>
+                    <span>主演：饭岛宽骑，犬饲贵丈</span>
+                    <span>集数：共10集</span>
+                    <span>标签：美食/治愈/纯爱/养小孩</span>
+                    <span>播出时间：2023年</span>
+                `,
+                desc: "不擅长和人一起吃饭的公司职员穗积丰（犬饲贵丈 饰），有一天在公园里遇到了上田穰（饭岛宽骑 饰）、上田种这对年龄差兄弟，教了他们制作饭团的方法。由此，3人越来越多地一起围坐在餐桌前吃饭，丰单调的生活也因兄弟俩发生转变，在烹饪与共处中体会到陪伴的温暖，最终成为家庭一员。"
+            },
+            // 第6个：相逢骤雨中（待补充）
+            {
+                id: 6,
+                title: "爱在记忆冻结时",
+                img: "骤雨中.jpeg",
+                alt: "爱在记忆冻结时",
+                meta: `
+                    <span>主角：池上郁哉 X 奥泽律</span>
+                    <span>主演：铃木康介，本田响矢</span>
+                    <span>集数：共6集</span>
+                    <span>标签：失忆/破镜重圆/美受</span>
+                    <span>播出时间：2023年</span>
+                `,
+                desc: "天然开朗的插画家奥泽律（本田响矢 饰），在分手后不久就遭遇了事故，只忘记了和池上郁哉（铃木康介 饰）交往的记忆。文具制造商的营业员郁哉作为室友为了重新开始2人的关系而奋斗。被郁哉的温柔所吸引，再次爱上郁哉的律，邀请郁哉踏上恢复记忆的旅程。"
+            },
+            {
+                id: 7,
+                title: "糖果色的恋爱反论",
+                img: "糖果色.jpeg",
+                alt: "糖果色的恋爱反论",
+                meta: `
+                    <span>主角：芜木元治 X 尾上聪</span>
+                    <span>主演：山中柔太朗，木村慧人</span>
+                    <span>集数：共8集</span>
+                    <span>标签：搭档/职场/从恨到爱</span>
+                    <span>播出时间：2022年</span>
+                `,
+                desc: "周刊杂志《DASH！》记者尾上聪和他偷偷视为竞争对手的同期·芜木元治在外调的埋伏组里组成组合。虽然两人反复发生冲突，但在一起追逐事件的过程中，开始在意彼此的事情。 正义感强烈的尾上聪对为达目的不择手段的芜木元治非常反感，两人冲突不断。但在共同追查事件、逐渐了解彼此的过程中，尾上发现自己似乎爱上了芜木，并为此惊慌失措。"
+            },
+            {
+       id: 8,
+        title: "幸福终末",
+        img: "幸福终末.png",
+        alt: "幸福终末",
+        meta: `
+            <span>主角：黄浩然 X 柏木千纮</span>
+            <span>主演：泽村铃，别府由来</span>
+            <span>集数：共8集</span>
+            <span>标签：矮攻/社会/不洁/虐向</span>
+            <span>播出时间：2024</span>
+        `,
+        desc: "该剧讲述了生活在社会角落的神秘美青年圭斗（原名黄浩然，泽村铃 饰）和被家人拒绝而失去一切的男人柏木千纮（别府由来 饰），用疯狂的爱填满彼此的过去和心灵的创伤的爱情故事。两位没有容身之处的人在经历了糟糕的相遇后开始共同生活，尽管有着内心的挣扎，但他们逐渐拉近了彼此的距离。"
+        },
+         {
+                id: 9,
+                title: "完美求婚",
+                img: "完美求婚.jpeg",
+                alt: "完美求婚",
+                meta: `
+                    <span>主角：深谷甲斐 X 渡浩国</span>
+                    <span>主演：野村康太，金子隼也</span>
+                    <span>集数：共6集</span>
+                    <span>标签：竹马/治愈/清淡</span>
+                    <span>播出时间：2024年</span>
+                `,
+                desc: "上班族渡浩国在遭受上司权势欺压、对人生感到厌倦之际，与家务技能出众的年轻男子深谷甲斐之间展开的深情同性爱恋"
+            },
+        {
+                id: 10,
+                title: "相逢骤雨中",
+                img: "骤雨中.jpeg",
+                alt: "相逢骤雨中",
+                meta: `
+                    <span>主角：萩原一显 X 半井整</span>
+                    <span>主演：武藤润，伊藤明日阳</span>
+                    <span>集数：共7集</span>
+                    <span>标签：不洁/天降/同频</span>
+                    <span>播出时间：2025年</span>
+                `,
+                desc: "在电器制造商的销售部门工作的萩原一显，正为与同居女友水谷かおり的无性生活而烦恼。有一天，他被任命为公司同期会的干事，本想将候选店的邮件发给自己，却误发给了某个人。收到邮件的对象是和一显同期在同一公司的总务部工作的半井整。两人都不知道对方是同事……他们以为对方是不知道名字和长相的陌生人，却逐渐发展成了可以吐露真实想法的奇妙关系。"
+            },
+            // 第7个：25时，赤坂见（待补充）
+            {
+                id: 11,
+                title: "25时，赤坂见（两季）",
+                img: "25时.png",
+                alt: "如果是你或许可以相恋",
+                meta: `
+                    <span>主角：羽山麻水 X 白崎由岐</span>
+                    <span>主演：驹木根葵汰，新原泰佑</span>
+                    <span>集数：第一季10集/第二季10集</span>
+                    <span>标签：演员/大学/前后辈</span>
+                    <span>播出时间：2024/2025年</span>
+                `,
+                desc: "白崎是个默默无闻的舞台剧演员，在某次因缘际会下成了BL连续剧男主角，而共同主演竟是他大学时期的学长，知名演员羽山麻水！在拍戏的过程中，白崎发现自己无法掌握饰演恋人的戏感，因此前往同性会所寻找契机，然而却被羽山发现，两人便开始以情侣方式相处。白崎对拍摄越来越得心应手，但羽山的态度却 愈发扑朔迷离。"
+            },
+            {
+                id: 12,
+                title: "体感预报",
+                img: "",
+                alt: "体感预报",
+                meta: `
+                    <span>主角：濑崎瑞贵 X 棚田叶</span>
+                    <span>主演：樋口幸平，增子敦贵</span>
+                    <span>集数：共8集</span>
+                    <span>标签：同居/保养/前后辈/大学</span>
+                    <span>播出时间：2023年</span>
+                `,
+                desc: "爽朗的帅哥气象预报员濑崎瑞贵很有人气，但他的真面目却是个蛮不讲理的暴君。穷途末路的色情漫画家棚田叶与濑崎同居，而他还要肩负所有家事及其它各种各样的杂务。以保证并不怎么走运的漫画家叶的衣食住行的约定为开端，叶得接受“对濑崎言听计从”这个条件。"
+            },
+            // 第8个：第二次恋爱才完美（待补充）
+            {
+                id: 13,
+                title: "第二次恋爱才完美",
+                img: "恋二度.webp",
+                alt: "第二次恋爱才完美",
+                meta: `
+                    <span>主角：岩永崇 X 宫田晃启</span>
+                    <span>主演：古屋吕敏，长谷川慎</span>
+                    <span>集数：共6集</span>
+                    <span>标签：前后辈/破镜重圆/社会</span>
+                    <span>播出时间：2024年</span>
+                `,
+                desc: "编辑宫田晃启为了委托撰写经济专栏，拜访了当红的大学副教授岩永崇，但他竟然是在高中时代分手的初恋对象！宫田晃启现在已经有了一个可以考虑结婚的女朋友，但岩永崇总是对他说些甜言蜜语，工作和生活都被岩永玩弄于股掌之间。理想、现实、自尊，无法像过去那样坦率的“超30男子”再次遇到了命中注定的人。充满迂回，令人着急的“第二次”恋爱的何去何从。"
+            },
+            {
+                id: 14,
+                title: "经典杯子蛋糕",
+                img: "",
+                alt: "经典杯子蛋糕",
+                meta: `
+                    <span>主角：外川 X 野末</span>
+                    <span>主演：木村达成，武田航平</span>
+                    <span>集数：共5集</span>
+                    <span>标签：前后辈/职场/年下/暗恋</span>
+                    <span>播出时间：2022年</span>
+                `,
+                desc: "即将年满四十岁的野末（武田航平 饰），在公司里是深受下属信赖、善解人意的上司，也很受女员工欢迎。可他对万事万物都提不起兴致，日复一日平淡无趣、毫无波澜地消磨着单调生活。野末的部下外川（木村达成 饰）马上就要三十岁，他外表冷淡寡言，却一直默默深藏心意，注视着野末。外川以“抗衰保养”为借口，不断邀约野末外出游玩，两人渐渐开始共度私人时光。在与外川一同经历各种新鲜事物的过程中，野末渐渐卸下内心束缚。不久之后，一份他从未体会过的情愫在心底悄然萌生。"
+            }
+        ];
+
+        // 2. 绑定剧集卡片点击事件
+        const dramaCards = document.querySelectorAll('.drama-card');
+        const detailMask = document.getElementById('dramaDetailMask');
+        const detailImg = document.getElementById('detailImg');
+        const detailTitle = document.getElementById('detailTitle');
+        const detailMeta = document.getElementById('detailMeta');
+        const detailDesc = document.getElementById('detailDesc');
+        const closeBtn = document.getElementById('detailCloseBtn');
+
+        dramaCards.forEach((card, index) => {
+            card.style.cursor = 'pointer';
+            card.addEventListener('click', () => {
+                const drama = dramaDetails[index];
+                // 填充详情内容
+                detailImg.innerHTML = `<img src="${drama.img}" alt="${drama.alt}">`;
+                detailTitle.innerText = drama.title;
+                detailMeta.innerHTML = drama.meta;
+                detailDesc.innerText = drama.desc;
+                // 显示弹窗
+                detailMask.style.display = 'flex';
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        // 3. 关闭弹窗逻辑
+        function closeDetail() {
+            detailMask.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        closeBtn.addEventListener('click', closeDetail);
+        detailMask.addEventListener('click', (e) => {
+            if (e.target === detailMask) closeDetail();
+        });
+
+        // 按ESC键关闭
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && detailMask.style.display === 'flex') {
+                closeDetail();
+            }
+        });
+</script>
+
+</body>
+</html>
